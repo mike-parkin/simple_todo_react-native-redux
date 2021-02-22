@@ -1,10 +1,12 @@
 export const ADD_TODO = 'ADD_TODO'
 export const DELETE_TODO = 'DELETE_TODO'
 
+let todoId = 0
+
 export const addTodo = task => ({
   type: ADD_TODO,
   payload: {
-    id: ++nextTodoId,
+    id: ++todoId,
     task: task
   }
 })

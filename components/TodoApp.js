@@ -1,4 +1,4 @@
-import React, { userState } from 'react'
+import React, { useState } from 'react'
 import { 
   Text,
   View,
@@ -12,8 +12,17 @@ import { addTodo, deleteTodo } from '../redux/actions'
 
 
 const TodoApp = (props) => {
-  
+  const todo_list = props.todo_list
   const [task, setTask] = useState('')
+
+  const handleAddTodo = () => {
+    props.dispatch(addTodo(task))
+    setTask("")
+  }
+
+  const handleDelete = (id) => {
+    props.dispatch(deleteTodo(id))
+  }
 
   return (
     <View>
@@ -28,16 +37,29 @@ const TodoApp = (props) => {
           />
         </Card.Content>
       </Card>
+      <Button mode="contained" onPress={handleAddTodo}>
+        Add Task
+      </Button>
+      <FlatList
+        data={todo_list}
+        keyExtractor={(item => item.id)}
+        renderItem={({item, index}) => {
+          return (
+            <>
+              <Text>task number: {item.id}</Text>
+              <Text>task: {item.task}</Text>
+              <Button onPress={() => handleDelete(item.id)}>delete</Button>
+            </>
+          )
+        }}
 
-
-
-
+      />
     </View>
   )
 }
 
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   return {
     todo_list: state.todos.todo_list
   }
